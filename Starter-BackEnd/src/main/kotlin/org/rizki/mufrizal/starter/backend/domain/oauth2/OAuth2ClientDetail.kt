@@ -40,7 +40,7 @@ data class OAuth2ClientDetail(
         val webServerRedirectUri: String? = null,
 
         @Column(name = "authorities", nullable = false)
-        val Authorities: String? = null,
+        val authorities: String? = null,
 
         @Column(name = "access_token_validity", nullable = false)
         val accessTokenValidity: Int? = null,

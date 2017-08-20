@@ -1,9 +1,11 @@
 package org.rizki.mufrizal.starter.backend.configuration
 
+import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
@@ -16,12 +18,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
-import org.springframework.security.web.access.channel.ChannelProcessingFilter
-import javax.sql.DataSource
-import org.springframework.core.io.ClassPathResource
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory
-import java.io.IOException
+import org.springframework.security.web.access.channel.ChannelProcessingFilter
+import java.io.File
+import java.nio.charset.Charset
+import javax.sql.DataSource
 
 /**
  *
@@ -51,7 +52,7 @@ open class OAuth2Configuration {
         @Bean
         fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
             val converter = JwtAccessTokenConverter()
-            val keyStoreKeyFactory = KeyStoreKeyFactory(ClassPathResource("keys/jwt.jks"), "mufrizalrizki".toCharArray())
+            val keyStoreKeyFactory = KeyStoreKeyFactory(ClassPathResource("keys${File.separator}jwt.jks"), "mufrizalrizki".toCharArray())
             converter.setKeyPair(keyStoreKeyFactory.getKeyPair("jwt"))
             return converter
         }
@@ -79,32 +80,22 @@ open class OAuth2Configuration {
 
     @Configuration
     @EnableResourceServer
-    protected class ResourceServerConfiguration @Autowired constructor(val dataSource: DataSource) : ResourceServerConfigurerAdapter() {
+    protected class ResourceServerConfiguration : ResourceServerConfigurerAdapter() {
 
         private val RESOURCE_ID = "RESOURCE_ID_BARANG"
 
         @Bean
-        fun tokenStore(): TokenStore {
-            return JwtTokenStore(jwtAccessTokenConverter())
-        }
-
-        @Bean
+        @Qualifier("jwtAccessTokenConverter")
         fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
             val converter = JwtAccessTokenConverter()
-            val resource = ClassPathResource("keys/public.txt")
-            var publicKey: String? = null
-            try {
-                publicKey = resource.inputStream.toString()
-            } catch (e: IOException) {
-                throw RuntimeException(e)
-            }
+            val resource = ClassPathResource("keys${File.separator}public.txt")
+            val publicKey: String? = IOUtils.toString(resource.inputStream, Charset.defaultCharset())
             converter.setVerifierKey(publicKey)
             return converter
         }
 
         override fun configure(resourceServerSecurityConfigurer: ResourceServerSecurityConfigurer?) {
             resourceServerSecurityConfigurer
-                    ?.tokenStore(tokenStore())
                     ?.resourceId(RESOURCE_ID)
         }
 

@@ -1,21 +1,20 @@
 package org.rizki.mufrizal.starter.backend.repository
 
-import org.rizki.mufrizal.starter.backend.domain.Barang
+import org.rizki.mufrizal.starter.backend.domain.oauth2.OAuth2ClientDetail
 import org.springframework.data.repository.PagingAndSortingRepository
 import java.util.Optional
-
 
 /**
  *
  * @Author Rizki Mufrizal <mufrizalrizki@gmail.com>
  * @Web <https://RizkiMufrizal.github.io>
  * @Since 20 August 2017
- * @Time 5:53 PM
+ * @Time 9:24 PM
  * @Project Starter-BackEnd
  * @Package org.rizki.mufrizal.starter.backend.repository
- * @File BarangRepository
+ * @File OAuth2ClientDetailRepository
  *
  */
-interface BarangRepository : PagingAndSortingRepository<Barang, String> {
-    fun findByIdBarang(idBarang: String): Optional<Barang>
+interface OAuth2ClientDetailRepository : PagingAndSortingRepository<OAuth2ClientDetail, String> {
+    fun findByClientId(clientId: String): Optional<OAuth2ClientDetail>
 }
