@@ -1,10 +1,14 @@
 <div class="container">
-  <form class="form-signin">
+  <form class="form-signin" [formGroup]="loginFormGroup" (ngSubmit)="login(loginFormGroup)">
     <h2 class="form-signin-heading">Please sign in</h2>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <div *ngIf="loginFormGroup.invalid && submitted" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Warning!</strong> Username Dan Password Wajib Diisi
+    </div>
+    <label for="Username" class="sr-only"></label>
+    <input formControlName="username" type="text" id="Username" class="form-control" placeholder="Username" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <div class="checkbox">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
