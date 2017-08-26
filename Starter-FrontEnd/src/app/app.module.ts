@@ -3,13 +3,16 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule, RoutedComponents } from './app.routing.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RoutedComponents
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     NgbModule.forRoot()
   ],
   providers: [],
