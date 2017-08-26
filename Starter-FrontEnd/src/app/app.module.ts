@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Ng2Webstorage } from 'ngx-webstorage';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule, RoutedComponents } from './app.routing.module';
+import { AppRoutingModule, RoutedComponents, RoutedProviders } from './app.routing.module';
 
 @NgModule({
   declarations: [
@@ -13,9 +14,10 @@ import { AppRoutingModule, RoutedComponents } from './app.routing.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    Ng2Webstorage,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [RoutedProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
