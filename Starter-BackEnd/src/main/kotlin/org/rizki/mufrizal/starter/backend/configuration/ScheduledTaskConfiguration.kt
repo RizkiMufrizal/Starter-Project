@@ -1,10 +1,13 @@
 package org.rizki.mufrizal.starter.backend.configuration
 
+import org.rizki.mufrizal.starter.backend.domain.Barang
+import org.rizki.mufrizal.starter.backend.domain.JenisBarang
 import org.rizki.mufrizal.starter.backend.domain.User
 import org.rizki.mufrizal.starter.backend.domain.oauth2.Authorities
 import org.rizki.mufrizal.starter.backend.domain.oauth2.AuthorizedGrantTypes
 import org.rizki.mufrizal.starter.backend.domain.oauth2.OAuth2ClientDetail
 import org.rizki.mufrizal.starter.backend.domain.oauth2.Scope
+import org.rizki.mufrizal.starter.backend.repository.BarangRepository
 import org.rizki.mufrizal.starter.backend.repository.OAuth2ClientDetailRepository
 import org.rizki.mufrizal.starter.backend.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +37,9 @@ class ScheduledTaskConfiguration {
     @Autowired
     private lateinit var oAuth2ClientDetailRepository: OAuth2ClientDetailRepository
 
+    @Autowired
+    private lateinit var barangRepository: BarangRepository
+
     @Scheduled(fixedRate = 3600000)
     fun insertData() {
         if (!this.userRepositoty.findByUsername("rizki").isPresent) {
@@ -60,6 +66,16 @@ class ScheduledTaskConfiguration {
                     additionalInformation = "{\"additional_param\":\"hello OAuth2\"}",
                     autoApprove = true
             ))
+        }
+
+        //just for development
+        if (this.barangRepository.findAll().count() == 0) {
+            for (b in 0..10) {
+                this.barangRepository.save(Barang(
+                        namaBarang = "Nama $b",
+                        jenisBarang = if (b % 2 == 0) JenisBarang.cair else JenisBarang.gas
+                ))
+            }
         }
     }
 }

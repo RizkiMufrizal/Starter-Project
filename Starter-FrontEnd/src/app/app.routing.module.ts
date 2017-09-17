@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
+import { BarangComponent } from './barang/barang.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
         component: HomeComponent,
         canActivate: [AuthenticatedGuardService],
         children: [
-            { path: '', component: DashboardComponent }
+            { path: '', component: DashboardComponent },
+            { path: 'barang', component: BarangComponent }
         ]
     },
     { path: '**', component: NotFoundComponent }
@@ -34,7 +36,8 @@ export const RoutedComponents = [
     HomeComponent,
     NotFoundComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    BarangComponent
 ];
 
 export const RoutedProviders = [
